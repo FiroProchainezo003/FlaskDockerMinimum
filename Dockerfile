@@ -1,30 +1,13 @@
-FROM ubuntu:latest
+FROM python:3.9-alpine3.13
 
-# update
-RUN apt-get update -y
-RUN apt-get upgrade -y
+RUN mkdir /app
 
-# install package
-# # python
-RUN apt-get install python3 python3-dev -y
-# # pip
-RUN apt-get install python3-pip -y
+WORKDIR /app
 
-# link
-# # python
-RUN ln -s /usr/bin/python3 /usr/bin/python
-# # pip
-RUN ln -s /usr/bin/pip3 /usr/bin/pip
-
-RUN mkdir /flask_app
-
-WORKDIR /flask_app
-
-COPY *.py /flask_app
-COPY static/ /flask_app/static/
-COPY templates/ /flask_app/templates/
-COPY requirements.txt requirements.txt
+COPY ./ /app
 
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
+
+CMD ["python", "/app/app.py"]
